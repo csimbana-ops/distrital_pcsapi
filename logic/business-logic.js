@@ -156,9 +156,11 @@ class BusinessLogic {
         s.name.length > 14 ? s.name.split(' ')[0] : s.name
       ),
       scores: sorted.map(s => +s.score.toFixed(1)),
-      colors: sorted.map(s =>
-        s.score >= this.meta ? '#0F1E2E' : '#D9291C'
-      ),
+      colors: sorted.map(s => {
+        if (s.nivel_sucursal === 2) return '#2980B9';    // Azul - Nivel 2
+        if (s.nivel_sucursal === 3) return '#B8620A';    // Naranja - Nivel 3
+        return '#A32D2D';                                 // Rojo - Nivel 4
+      }),
       stores: sorted
     };
   }
@@ -199,7 +201,7 @@ class BusinessLogic {
       {
         title: 'Calidad (25%)',
         score: store.calidad,
-        headers: ['% Aprobadas', '% Burbujas', '% Distribución', '% Horneado'],
+        headers: ['Aprobadas', 'Burbujas', 'Distribución', 'Horneado'],
         values: [
           `${store.cd.aprobadas.toFixed(2)}%`,
           `${store.cd.burbujas.toFixed(2)}%`,
@@ -221,7 +223,7 @@ class BusinessLogic {
       {
         title: 'Cobro (15%)',
         score: store.cobro,
-        headers: ['% Transacc. OK', '% Aperturas', '% Ticket no ent.', ''],
+        headers: ['Transacc. OK', 'Aperturas', 'Ticket no ent.', ''],
         values: [
           `${store.cod.ok.toFixed(2)}%`,
           `${store.cod.apertura.toFixed(2)}%`,

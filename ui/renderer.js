@@ -53,7 +53,6 @@ class UIRenderer {
    * Renderiza el scorecard general (gráficos + tabla)
    */
   renderGeneralScorecard() {
-    this.renderDoughnutChart();
     this.renderBarChart();
     this.renderScorecardTable();
   }
@@ -157,7 +156,7 @@ class UIRenderer {
         <td style="color:${s.operativoColor};font-weight:600">${s.operativo.toFixed(1)}</td>
         <td style="color:${s.cobroColor};font-weight:600">${s.cobro.toFixed(1)}</td>
         <td style="color:${s.apoyoColor};font-weight:700">${s.apoyo}%</td>
-        <td><span class="${s.pass ? 'bp' : 'bf'}">${s.pass ? 'APRUEBA' : 'REPRUEBA'}</span></td>
+        <td><b>${s.nivel_sucursal}</b></td>
       `;
       tb.appendChild(tr);
     });
@@ -239,12 +238,11 @@ class UIRenderer {
           <div class="scard-meta">
             Apoyo al cajero: <b>${store.apoyo}%</b> &nbsp;·&nbsp; 
             Prom. cajeros: <b>${store.cajeros.toFixed(2)}</b><br>
-            Calidad: <b>${store.crit}</b>
+            Calidad: <b>${store.crit}</b> &nbsp;·&nbsp; Nivel: <b>${store.nivel_sucursal}</b>
           </div>
         </div>
         <div style="text-align:right">
           <div class="scard-score" style="color:${scoreColor}">${store.score.toFixed(1)}</div>
-          <span class="${store.pass ? 'bp' : 'bf'}">${store.pass ? 'APRUEBA' : 'REPRUEBA'}</span>
         </div>
       </div>
       <div class="scard-body">
@@ -268,14 +266,9 @@ class UIRenderer {
    * Crea una tabla de pilar dentro de una tarjeta
    */
   createPillarTable(sec) {
-    const scoreColor = this.bl.getScoreColor(sec.score);
-    const scoreBgColor = this.bl.getScoreBgColor(sec.score);
-
     return `
       <thead>
         <tr>
-          <th style="text-align:left">${sec.title}</th>
-          <th>Score</th>
           <th>${sec.headers[0]}</th>
           <th>${sec.headers[1]}</th>
           <th>${sec.headers[2]}</th>
@@ -284,8 +277,6 @@ class UIRenderer {
       </thead>
       <tbody>
         <tr>
-          <td style="font-weight:600">${sec.title}</td>
-          <td style="background:${scoreBgColor}"><b style="color:${scoreColor}">${sec.score.toFixed(1)}</b></td>
           <td>${sec.values[0]}</td>
           <td>${sec.values[1]}</td>
           <td>${sec.values[2]}</td>
