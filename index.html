@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reporte PCSAPI — Distrito 10</title>
+  <link rel="stylesheet" href="styles/main.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+</head>
+<body>
+  <div class="page">
+
+    <!-- ENCABEZADO -->
+    <div class="top-header">
+      <div class="lc-logo">
+        <div class="lc-circle">LC</div>
+        <div>
+          <div class="lc-name">Little Caesars</div>
+          <div class="gritsee-txt">elaborado por gritsee</div>
+        </div>
+      </div>
+      <div class="header-meta">
+        <strong>Distrito 10 &nbsp;·&nbsp; Semana 16 – 22 Mar 2026</strong>
+        <span id="meta-count"></span> sucursales evaluadas &nbsp;·&nbsp; Meta: 70 puntos &nbsp;·&nbsp; Metodología Opción A
+      </div>
+    </div>
+
+    <!-- KPIs -->
+    <div class="kpi-row">
+      <div class="kpi">
+        <div class="kpi-val" style="color:var(--navy)" id="kpi-total">—</div>
+        <div class="kpi-label">Sucursales evaluadas</div>
+        <div class="kpi-sub">Distrito 10</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-val" style="color:var(--amber)" id="kpi-avg">—</div>
+        <div class="kpi-label">Score promedio</div>
+        <div class="kpi-sub">Meta: 70 pts</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-val" style="color:var(--green)" id="kpi-pass">—</div>
+        <div class="kpi-label">Aprobadas</div>
+        <div class="kpi-sub">Score ≥ 70 pts</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-val" style="color:#A32D2D" id="kpi-fail">—</div>
+        <div class="kpi-label">En riesgo</div>
+        <div class="kpi-sub">Requieren acción</div>
+      </div>
+    </div>
+
+    <!-- SCORECARD GENERAL -->
+    <div class="section-box">
+      <h2>Scorecard General — Todas las Sucursales</h2>
+      <div class="charts-2">
+        <div>
+          <div class="chart-lbl">Resumen de aprobación</div>
+          <div style="position:relative;height:190px;"><canvas id="donaChart"></canvas></div>
+        </div>
+        <div>
+          <div class="chart-lbl">Ranking de desempeño por sucursal</div>
+          <div style="position:relative;height:190px;"><canvas id="barChart"></canvas></div>
+        </div>
+      </div>
+      <p class="nota">CAMBIO A NIVEL DISTRITAL – SIN DETALLE DE TIEMPO</p>
+      <div style="overflow-x:auto;">
+        <table>
+          <thead>
+            <tr>
+              <th>Sucursal</th>
+              <th>Score Global</th>
+              <th>Tiempos 35%</th>
+              <th>Calidad 25%</th>
+              <th>Operativo 25%</th>
+              <th>Cobro 15%</th>
+              <th>Apoyo %</th>
+              <th>Estado</th>
+            </tr>
+          </thead>
+          <tbody id="sc-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- MATRIZ DE DESEMPEÑO -->
+    <div class="section-box">
+      <h2>Matriz de Desempeño</h2>
+      <div style="display:flex;justify-content:center;">
+        <div>
+          <div class="chart-lbl">Perfil promedio del distrito (radar)</div>
+          <div style="position:relative;height:250px;width:320px;"><canvas id="radarDistrito"></canvas></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TARJETAS DE SUCURSALES -->
+    <div class="section-box">
+      <h2>Scorecard Sucursales — Detalle por Pilar con Radar</h2>
+      <div class="store-grid" id="store-cards"></div>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="footer">Little Caesars &nbsp;·&nbsp; Gritsee &nbsp;·&nbsp; PCSAPI Distrito 10 &nbsp;·&nbsp; Semana 16–22 Mar 2026 &nbsp;·&nbsp; Confidencial</div>
+
+  </div>
+
+  <!-- SCRIPTS EN ORDEN -->
+  <script src="data/stores.js"></script>
+  <script src="data/config.js"></script>
+  <script src="logic/business-logic.js"></script>
+  <script src="ui/renderer.js"></script>
+  <script>
+    // Inicializar reporte cuando DOM esté listo
+    document.addEventListener('DOMContentLoaded', () => {
+      ui.init();
+    });
+  </script>
+</body>
+</html>
