@@ -55,6 +55,7 @@ class UIRenderer {
   renderGeneralScorecard() {
     this.renderBarChart();
     this.renderScorecardTable();
+    this.renderTimingRankingTable();
   }
 
   /**
@@ -150,13 +151,39 @@ class UIRenderer {
       const tr = document.createElement('tr');
       tr.innerHTML = `
         <td><a href="#${s.anchor}" style="color:var(--navy);text-decoration:none">${s.name}</a></td>
-        <td style="background:${s.scoreBgColor}"><b style="color:${s.scoreColor}">${s.score.toFixed(1)}</b></td>
-        <td style="color:${s.tiemposColor};font-weight:600">${s.tiempos.toFixed(1)}</td>
-        <td style="color:${s.calidadColor};font-weight:600">${s.calidad.toFixed(1)}</td>
-        <td style="color:${s.operativoColor};font-weight:600">${s.operativo.toFixed(1)}</td>
-        <td style="color:${s.cobroColor};font-weight:600">${s.cobro.toFixed(1)}</td>
-        <td style="color:${s.apoyoColor};font-weight:700">${s.apoyo}%</td>
         <td><b>${s.nivel_sucursal}</b></td>
+        <td style="background:${s.scoreBgColor}"><b style="color:${s.scoreColor}">${s.scoreDisplay}</b></td>
+        <td style="color:${s.calidadColor};font-weight:600">${s.calidadDisplay}%</td>
+        <td style="color:${s.operativoColor};font-weight:600">${s.operativoDisplay}%</td>
+        <td style="color:${s.cobroColor};font-weight:600">${s.cobroDisplay}%</td>
+        <td style="color:${s.apoyoColor};font-weight:700">${s.apoyo}%</td>
+      `;
+      tb.appendChild(tr);
+    });
+  }
+
+  /**
+   * Renderiza tabla comparativa de tiempos
+   */
+  renderTimingRankingTable() {
+    const tb = document.getElementById('timing-tbody');
+    if (!tb) return;
+
+    tb.innerHTML = '';
+    const tableData = this.bl.getTimingRankingData();
+
+    tableData.forEach(s => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${s.rank}</td>
+        <td><b>${s.name}</b></td>
+        <td>${s.nivel_sucursal}</td>
+        <td style="color:${s.tiemposColor};font-weight:700">${s.tiempos}%</td>
+        <td>${s.comida}%</td>
+        <td>${s.cena}%</td>
+        <td>${s.drive}%</td>
+        <td>${s.seg}s</td>
+        <td><span class="time-focus">${s.focusLabel}: ${s.focusValue}%</span></td>
       `;
       tb.appendChild(tr);
     });
@@ -207,7 +234,7 @@ class UIRenderer {
     if (!gc) return;
 
     gc.innerHTML = '';
-    this.bl.stores.forEach((store, idx) => {
+    this.bl.getSortedStores().forEach((store, idx) => {
       const card = this.createStoreCard(store, idx);
       gc.appendChild(card);
       this.renderStoreRadar(store, idx);
@@ -242,7 +269,7 @@ class UIRenderer {
           </div>
         </div>
         <div style="text-align:right">
-          <div class="scard-score" style="color:${scoreColor}">${store.score.toFixed(1)}</div>
+          <div class="scard-score" style="color:${scoreColor}">${this.bl.roundValue(store.score)}</div>
         </div>
       </div>
       <div class="scard-body">

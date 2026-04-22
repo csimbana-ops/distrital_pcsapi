@@ -68,10 +68,42 @@ class BusinessLogic {
   }
 
   /**
-   * Ordena sucursales por score descendente
+   * Redondea un valor numérico para visualización
    */
-  getSortedByScore() {
-    return [...this.stores].sort((a, b) => b.score - a.score);
+  roundValue(value) {
+    return Math.round(value);
+  }
+
+  /**
+   * Ordena sucursales por nivel y luego por score descendente
+   */
+  getSortedStores() {
+    return [...this.stores].sort((a, b) => {
+      if (a.nivel_sucursal !== b.nivel_sucursal) {
+        return a.nivel_sucursal - b.nivel_sucursal;
+      }
+
+      if (b.score !== a.score) {
+        return b.score - a.score;
+      }
+
+      return a.name.localeCompare(b.name);
+    });
+  }
+
+  /**
+   * Obtiene el área con menor desempeño en tiempos
+   */
+  getTimeFocus(store) {
+    const metrics = [
+      { label: 'Rush comida', value: store.td.comida },
+      { label: 'Rush cena', value: store.td.cena },
+      { label: 'Drive', value: store.td.drive }
+    ];
+
+    return metrics.reduce((lowest, current) =>
+      current.value < lowest.value ? current : lowest
+    );
   }
 
   /**
@@ -150,7 +182,7 @@ class BusinessLogic {
    * Obtiene datos para gráfico de barras
    */
   getBarChartData() {
-    const sorted = this.getSortedByScore();
+    const sorted = this.getSortedStores();
     return {
       labels: sorted.map(s =>
         s.name.length > 14 ? s.name.split(' ')[0] : s.name
@@ -169,9 +201,14 @@ class BusinessLogic {
    * Prepara datos para tabla scorecard
    */
   getScoreCardTableData() {
-    return this.getSortedByScore().map(s => ({
+    return this.getSortedStores().map(s => ({
       ...s,
       anchor: `c-${this.slugify(s.name)}`,
+      scoreDisplay: this.roundValue(s.score),
+      tiemposDisplay: this.roundValue(s.tiempos),
+      calidadDisplay: this.roundValue(s.calidad),
+      operativoDisplay: this.roundValue(s.operativo),
+      cobroDisplay: this.roundValue(s.cobro),
       scoreColor: this.getScoreColor(s.score),
       scoreBgColor: this.getScoreBgColor(s.score),
       tiemposColor: this.getScoreColor(s.tiempos),
@@ -180,6 +217,40 @@ class BusinessLogic {
       cobroColor: this.getScoreColor(s.cobro),
       apoyoColor: this.getApoyoColor(s.apoyo)
     }));
+  }
+
+  /**
+   * Prepara datos para la tabla comparativa de tiempos
+   */
+  getTimingRankingData() {
+    return [...this.stores]
+      .sort((a, b) => {
+        if (a.tiempos !== b.tiempos) {
+          return a.tiempos - b.tiempos;
+        }
+
+        if (a.nivel_sucursal !== b.nivel_sucursal) {
+          return a.nivel_sucursal - b.nivel_sucursal;
+        }
+
+        return a.name.localeCompare(b.name);
+      })
+      .map((store, index) => {
+        const focus = this.getTimeFocus(store);
+        return {
+          rank: index + 1,
+          name: store.name,
+          nivel_sucursal: store.nivel_sucursal,
+          tiempos: this.roundValue(store.tiempos),
+          comida: this.roundValue(store.td.comida),
+          cena: this.roundValue(store.td.cena),
+          drive: this.roundValue(store.td.drive),
+          seg: this.roundValue(store.td.seg),
+          focusLabel: focus.label,
+          focusValue: this.roundValue(focus.value),
+          tiemposColor: this.getScoreColor(store.tiempos)
+        };
+      });
   }
 
   /**
@@ -192,9 +263,9 @@ class BusinessLogic {
         score: store.tiempos,
         headers: ['Rush comida', 'Rush cena', 'Drive', 'Tiempo prom'],
         values: [
-          `${store.td.comida.toFixed(2)}%`,
-          `${store.td.cena.toFixed(2)}%`,
-          `${store.td.drive.toFixed(2)}%`,
+          `${this.roundValue(store.td.comida)}%`,
+          `${this.roundValue(store.td.cena)}%`,
+          `${this.roundValue(store.td.drive)}%`,
           `${store.td.seg}s`
         ]
       },
@@ -203,10 +274,10 @@ class BusinessLogic {
         score: store.calidad,
         headers: ['Aprobadas', 'Burbujas', 'Distribución', 'Horneado'],
         values: [
-          `${store.cd.aprobadas.toFixed(2)}%`,
-          `${store.cd.burbujas.toFixed(2)}%`,
-          `${store.cd.distrib.toFixed(2)}%`,
-          `${store.cd.horneado.toFixed(2)}%`
+          `${this.roundValue(store.cd.aprobadas)}%`,
+          `${this.roundValue(store.cd.burbujas)}%`,
+          `${this.roundValue(store.cd.distrib)}%`,
+          `${this.roundValue(store.cd.horneado)}%`
         ]
       },
       {
@@ -225,9 +296,9 @@ class BusinessLogic {
         score: store.cobro,
         headers: ['Transacc. OK', 'Aperturas', 'Ticket no ent.', ''],
         values: [
-          `${store.cod.ok.toFixed(2)}%`,
-          `${store.cod.apertura.toFixed(2)}%`,
-          `${store.cod.ticket.toFixed(2)}%`,
+          `${this.roundValue(store.cod.ok)}%`,
+          `${this.roundValue(store.cod.apertura)}%`,
+          `${this.roundValue(store.cod.ticket)}%`,
           ''
         ]
       }

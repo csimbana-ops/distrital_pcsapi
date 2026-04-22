@@ -232,6 +232,17 @@ tbody tr:last-child td {
   font-style: italic;
 }
 
+.time-focus {
+  display: inline-block;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: #FEF0EF;
+  color: #A32D2D;
+  font-size: 10px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
 /* Grid de tiendas */
 .store-grid {
   display: grid;

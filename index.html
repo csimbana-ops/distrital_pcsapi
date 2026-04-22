@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Reporte PCSAPI — Distrito 10</title>
+  <title>Reporte PCSAPI - Distrito 10</title>
   <link rel="stylesheet" href="styles/main.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 </head>
@@ -21,16 +21,16 @@
       <div style="flex:0 0 220px;display:flex;flex-direction:column;gap:15px;">
         <div class="kpi" style="text-align:center;flex:1;display:flex;flex-direction:column;justify-content:center;background:linear-gradient(135deg, #f8f9fa 0%, #fff 100%);border:1px solid #e8ecf1;">
           <div style="font-size:11px;color:var(--navy);font-weight:600;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:3px;">Distrito 10</div>
-          <div style="font-size:12px;color:var(--muted);">Semana 16 – 22</div>
+          <div style="font-size:12px;color:var(--muted);">Semana 16 - 22</div>
           <div style="font-size:12px;color:var(--muted);">Mar 2026</div>
         </div>
         <div class="kpi" style="text-align:center;flex:1;display:flex;flex-direction:column;justify-content:center;">
-          <div class="kpi-val" style="color:var(--navy)" id="kpi-total">—</div>
+          <div class="kpi-val" style="color:var(--navy)" id="kpi-total">-</div>
           <div class="kpi-label">Sucursales evaluadas</div>
           <div class="kpi-sub">Distrito 10</div>
         </div>
         <div class="kpi" style="text-align:center;flex:1;display:flex;flex-direction:column;justify-content:center;">
-          <div class="kpi-val" style="color:var(--amber)" id="kpi-avg">—</div>
+          <div class="kpi-val" style="color:var(--amber)" id="kpi-avg">-</div>
           <div class="kpi-label">Score promedio</div>
           <div class="kpi-sub">Meta: 70 pts</div>
         </div>
@@ -48,39 +48,61 @@
 
     <!-- SCORECARD GENERAL -->
     <div class="section-box">
-      <h2>Scorecard General — Todas las Sucursales</h2>
-      <p class="nota">CAMBIO A NIVEL DISTRITAL – SIN DETALLE DE TIEMPO</p>
+      <h2>Scorecard General - Todas las Sucursales</h2>
+      <p class="nota">Ordenado por nivel de sucursal y luego por score global.</p>
       <div style="overflow-x:auto;margin-bottom:30px;">
         <table>
           <thead>
             <tr>
               <th>Sucursal</th>
+              <th>Nivel</th>
               <th>Score Global</th>
-              <th>Tiempos 35%</th>
               <th>Calidad 25%</th>
               <th>Operativo 25%</th>
               <th>Cobro 15%</th>
               <th>Apoyo %</th>
-              <th>Nivel</th>
             </tr>
           </thead>
           <tbody id="sc-tbody"></tbody>
         </table>
       </div>
       <div style="margin-bottom:20px;">
-        <div class="chart-lbl">Ranking de desempeño por sucursal</div>
+        <div class="chart-lbl">Sucursales ordenadas por nivel y score</div>
         <div style="position:relative;height:190px;"><canvas id="barChart"></canvas></div>
+      </div>
+    </div>
+
+    <div class="section-box">
+      <h2>Ranking Comparativo de Tiempos</h2>
+      <p class="nota">Ordenado del mayor problema al mejor resultado en tiempos.</p>
+      <div style="overflow-x:auto;">
+        <table>
+          <thead>
+            <tr>
+              <th>Rank</th>
+              <th>Sucursal</th>
+              <th>Nivel</th>
+              <th>Tiempos</th>
+              <th>Rush comida</th>
+              <th>Rush cena</th>
+              <th>Drive</th>
+              <th>Tiempo prom</th>
+              <th>Foco</th>
+            </tr>
+          </thead>
+          <tbody id="timing-tbody"></tbody>
+        </table>
       </div>
     </div>
 
     <!-- TARJETAS DE SUCURSALES -->
     <div class="section-box">
-      <h2>Scorecard Sucursales — Detalle por Pilar con Radar</h2>
+      <h2>Scorecard Sucursales - Detalle por Pilar con Radar</h2>
       <div class="store-grid" id="store-cards"></div>
     </div>
 
     <!-- FOOTER -->
-    <div class="footer">Little Caesars &nbsp;·&nbsp; Gritsee &nbsp;·&nbsp; PCSAPI Distrito 10 &nbsp;·&nbsp; Semana 16–22 Mar 2026 &nbsp;·&nbsp; Confidencial</div>
+    <div class="footer">Little Caesars &nbsp;|&nbsp; Gritsee &nbsp;|&nbsp; PCSAPI Distrito 10 &nbsp;|&nbsp; Semana 16-22 Mar 2026 &nbsp;|&nbsp; Confidencial</div>
 
   </div>
 
@@ -90,7 +112,7 @@
   <script src="logic/business-logic.js"></script>
   <script src="ui/renderer.js"></script>
   <script>
-    // Inicializar reporte cuando DOM esté listo
+    // Inicializar reporte cuando DOM este listo
     document.addEventListener('DOMContentLoaded', () => {
       ui.init();
     });
