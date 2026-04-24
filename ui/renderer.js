@@ -9,6 +9,26 @@ class UIRenderer {
   }
 
   /**
+   * Genera un enlace al reporte externo de una sucursal cuando existe
+   */
+  createStoreReportLink(name, reportUrl, className = '') {
+    if (!reportUrl) return name;
+
+    const classAttr = className ? ` class="${className}"` : '';
+    return `<a href="${reportUrl}"${classAttr} target="_blank" rel="noopener noreferrer" title="Abrir reporte de ${name}">${name}</a>`;
+  }
+
+  /**
+   * Genera un enlace al conteo de cajeros cuando existe
+   */
+  createCashiersLink(store) {
+    const value = store.cajeros.toFixed(2);
+    if (!store.cashiersUrl) return value;
+
+    return `<a href="${store.cashiersUrl}" class="store-detail-link" target="_blank" rel="noopener noreferrer" title="Abrir conteo de cajeros de ${store.name}">${value}</a>`;
+  }
+
+  /**
    * Inicializa la renderización del reporte completo
    */
   init() {
@@ -176,7 +196,7 @@ class UIRenderer {
       const tr = document.createElement('tr');
       tr.innerHTML = `
         <td>${s.rank}</td>
-        <td><b>${s.name}</b></td>
+        <td><b>${this.createStoreReportLink(s.name, s.reportUrl, 'store-report-link')}</b></td>
         <td>${s.nivel_sucursal}</td>
         <td style="color:${s.tiemposColor};font-weight:700">${s.tiempos}%</td>
         <td>${s.comida}%</td>
@@ -257,14 +277,20 @@ class UIRenderer {
     const scoreColor = this.bl.getScoreColor(store.score);
     const scoreBgColor = this.bl.getScoreBgColor(store.score);
     const apoyoColor = this.bl.getApoyoColor(store.apoyo);
+    const storeName = this.createStoreReportLink(
+      store.name,
+      store.reportUrl,
+      'store-report-link scard-report-link'
+    );
+    const cashiersAverage = this.createCashiersLink(store);
 
     div.innerHTML = `
       <div class="scard-head ${store.pass ? 'pass' : 'fail'}">
         <div>
-          <div class="scard-name">${store.name}</div>
+          <div class="scard-name">${storeName}</div>
           <div class="scard-meta">
             Apoyo al cajero: <b>${store.apoyo}%</b> &nbsp;·&nbsp; 
-            Prom. cajeros: <b>${store.cajeros.toFixed(2)}</b><br>
+            Prom. cajeros: <b>${cashiersAverage}</b><br>
             Calidad: <b>${store.crit}</b> &nbsp;·&nbsp; Nivel: <b>${store.nivel_sucursal}</b>
           </div>
         </div>

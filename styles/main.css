@@ -206,6 +206,37 @@ tbody tr:last-child td {
   border-bottom: none;
 }
 
+.store-report-link {
+  color: var(--navy);
+  font-weight: inherit;
+  text-decoration: none;
+}
+
+.store-report-link:hover,
+.store-report-link:focus {
+  text-decoration: underline;
+}
+
+.store-report-link:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 2px;
+}
+
+.store-detail-link {
+  color: var(--navy);
+  text-decoration: none;
+}
+
+.store-detail-link:hover,
+.store-detail-link:focus {
+  text-decoration: underline;
+}
+
+.store-detail-link:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 2px;
+}
+
 /* Badges */
 .bp {
   background: #EAF5ED;

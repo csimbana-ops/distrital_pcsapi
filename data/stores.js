@@ -101,6 +101,8 @@ const STORES = [
   },
   {
     name:"Maravillas",
+    reportUrl:"https://grits-static-content.s3.us-east-1.amazonaws.com/loc-reports/location-report-69e0ec0b982e5663e2f30488/index.html",
+    cashiersUrl:"https://drive.google.com/file/d/1NW_7qEcCybmyQNN1n9KURoSIIZ27xFuu/view",
     score:72.40,
     pass:true,
     tiempos:77.19,
@@ -120,6 +122,8 @@ const STORES = [
   },
   {
     name:"Mirasierra",
+    reportUrl:"https://grits-static-content.s3.us-east-1.amazonaws.com/loc-reports/location-report-69e0ec0b998c6a7ff6156f61/index.html",
+    cashiersUrl:"https://drive.google.com/file/u/3/d/1Y3Q44lRPqhE5cR6VqbMAJnfFwDkwST0U/view?usp=drivesdk",
     score:68.85,
     pass:false,
     tiempos:42.55,

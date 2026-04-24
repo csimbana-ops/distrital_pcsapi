@@ -240,6 +240,7 @@ class BusinessLogic {
         return {
           rank: index + 1,
           name: store.name,
+          reportUrl: store.reportUrl || null,
           nivel_sucursal: store.nivel_sucursal,
           tiempos: this.roundValue(store.tiempos),
           comida: this.roundValue(store.td.comida),
